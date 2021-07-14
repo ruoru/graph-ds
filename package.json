@@ -1,0 +1,26 @@
+{
+  "name": "graph-ds",
+  "version": "0.0.0",
+  "description": "Common operations of data structure graph",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruoru/graph-ds.git"
+  },
+  "keywords": [
+    "graph",
+    "graphs",
+    "graph-util",
+    "graph-utils",
+    "graph-ds"
+  ],
+  "author": "ruoru",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/ruoru/graph-ds/issues"
+  },
+  "homepage": "https://github.com/ruoru/graph-ds#readme"
+}
