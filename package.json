@@ -1,6 +1,6 @@
 {
   "name": "graph-ds",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Common operations of data structure graph",
   "main": "src/index.js",
   "type": "module",
