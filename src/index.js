@@ -17,14 +17,29 @@ class OrthogonalListEdge {
   }
 }
 
+// vertices 数组里面顶点：index 是降级方案，优先使用 id，如果已经使用 index 方案，则一直使用 index 方案。
+function isUseIndex(key = '', item = {}, status) {
+  let result;
+  try {
+    result = !status && !(key in item);
+  } catch (error) {
+    result = true;
+    console.error(`useIndex: ${error}`);
+  }
+  return result;
+}
+
 // 边数组转为邻接矩阵
 export function edgesetArray_adjacencyMatrix(vertices, edges, keyMap = {}) {
   // 合并键值
   keyMap = Object.assign({ id: 'id', beginId: 'beginId', endId: 'endId', weight: 'weight' }, keyMap);
 
+  // 如果 vertices 没有 id 则用 index
+  const useIndex = isUseIndex(keyMap.id, vertices[0]);
+
   const verticesIdIndex = {};
   vertices.forEach((item, i) => {
-    verticesIdIndex[item[keyMap.id] || i] = i; // 如果 vertices 没有 id 则用 index
+    verticesIdIndex[useIndex ? i : item[keyMap.id]] = i;
   });
 
   // 初始化矩阵
@@ -51,17 +66,20 @@ export function adjacencyMatrix_edgesetArray(vertices, matrix, keyMap = {}) {
   // 矩阵边长，防止不规则矩阵
   const maxMatrixLength = vertices.length || 0;
 
+  // 如果 vertices 没有 id 则用 index
+  const useIndex = isUseIndex(keyMap.id, vertices[0]);
+
   // 生成边
   const edges = [];
   for (let i = 0; i < maxMatrixLength; i++) {
-    const beginId = vertices[i][keyMap.id] || i; // 如果 vertices 没有 id 则用 index
+    const beginId = useIndex ? i : vertices[i][keyMap.id];
 
     for (let j = 0; j < maxMatrixLength; j++) {
-      const weight = matrix[i][j];
+      const weight = (matrix[i] || [])[j];
       if (![0, Infinity, NaN, false, null, undefined, ''].includes(weight)) {
         edges.push({
           beginId,
-          endId: vertices[j][keyMap.id] || j,  // 如果 vertices 没有 id 则用 index
+          endId: useIndex ? j : vertices[j][keyMap.id],
           weight,
         })
       }
@@ -76,10 +94,13 @@ export function edgesetArray_orthogonalList(vertices, edges, keyMap = {}) {
   // 合并键值
   keyMap = Object.assign({ id: 'id', beginId: 'beginId', endId: 'endId', weight: 'weight' }, keyMap);
 
+  // 如果 vertices 没有 id 则用 index
+  const useIndex = isUseIndex(keyMap.id, vertices[0]);
+
   // 实例化节点
   const verticesMap = new Map();
   vertices.forEach((item, i) => {
-    verticesMap.set(item[keyMap.id] || i, new OrthogonalListVertice(item, null, null)); // 如果 vertices 没有 id 则用 index
+    verticesMap.set(useIndex ? i : item[keyMap.id], new OrthogonalListVertice(item, null, null));
   });
 
   const nextInMap = new Map();
@@ -122,10 +143,13 @@ export function adjacencyMatrix_orthogonalList(vertices, matrix, keyMap) {
   // 合并键值
   keyMap = Object.assign({ id: 'id' }, keyMap);
 
+  // 如果 vertices 没有 id 则用 index
+  const useIndex = isUseIndex(keyMap.id, vertices[0]);
+
   // 实例化节点
   const verticesMap = new Map();
   vertices.forEach((item, i) => {
-    verticesMap.set(item[keyMap.id] || i, new OrthogonalListVertice(item, null, null)); // 如果 vertices 没有 id 则用 index
+    verticesMap.set(useIndex ? i : item[keyMap.id], new OrthogonalListVertice(item, null, null));
   });
 
   const nextInMap = new Map();
@@ -134,7 +158,7 @@ export function adjacencyMatrix_orthogonalList(vertices, matrix, keyMap) {
 
   for (let i = 0; i < matrix.length; i++) {
     const rowsItems = matrix[i];
-    const currentBeginId = vertices[i][keyMap.id] || i; // 如果 vertices 没有 id 则用 index
+    const currentBeginId = useIndex ? i : vertices[i][keyMap.id];
 
     for (let j = 0; j < rowsItems.length; j++) {
       const weight = rowsItems[j];
@@ -144,7 +168,7 @@ export function adjacencyMatrix_orthogonalList(vertices, matrix, keyMap) {
         continue;
       }
 
-      const currentEndId = vertices[j][keyMap.id] || j; // 如果 vertices 没有 id 则用 index
+      const currentEndId = useIndex ? j : vertices[j][keyMap.id];
       const currentEdge = new OrthogonalListEdge(weight, verticesMap.get(currentBeginId), verticesMap.get(currentEndId), null, null, weight);
 
       // 出度邻接表

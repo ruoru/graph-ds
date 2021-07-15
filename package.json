@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "description": "Common operations of data structure graph",
   "main": "src/index.js",
+  "type": "module",
   "scripts": {
-    "test": "jest"
+    "test": "node --experimental-vm-modules node_modules/.bin/jest"
   },
   "repository": {
     "type": "git",
@@ -22,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/ruoru/graph-ds/issues"
   },
-  "homepage": "https://github.com/ruoru/graph-ds#readme"
+  "homepage": "https://github.com/ruoru/graph-ds#readme",
+  "devDependencies": {
+    "jest": "^27.0.6"
+  }
 }

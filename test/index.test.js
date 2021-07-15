@@ -1,33 +1,3 @@
-# graph-ds
-Common operations of data structure graph
-
-
-
-### Function
-
-| 原始类型 | 目标类型 | 方法                                                         |
-| -------- | -------- | ------------------------------------------------------------ |
-| 边数组   | 邻接矩阵 | edgesetArray_adjacencyMatrix(vertices, edges, keyMap) => { vertices, matrix } |
-| 邻接矩阵 | 边数组   | adjacencyMatrix_edgesetArray(vertices, matrix, keyMap) => { vertices, edges } |
-| 边数组   | 十字链表 | edgesetArray_orthogonalList(vertices, edges, keyMap) => verticesMap |
-| 邻接矩阵 | 十字链表 | adjacencyMatrix_orthogonalList(vertices, matrix, keyMap) => verticesMap |
-
-
-
-### API
-
-| 参数     | 说明               | 类型    | 默认值                                                       | 版本 |
-| -------- | ------------------ | ------- | ------------------------------------------------------------ | ---- |
-| vertices | 顶点               | array{} | -                                                            |      |
-| edges    | 边                 | array{} | -                                                            |      |
-| matrix   | 矩阵               | array[] | -                                                            |      |
-| keyMap   | vertices的键值映射 | object  | { id: 'id', beginId: 'beginId', endId: 'endId', weight: 'weight' } |      |
-
-
-
-### Usage
-
-```javascript
 const nodes = [{
   idnum: 'v0', name: 0,
 }, {
@@ -105,6 +75,7 @@ test('edgesetArray_adjacencyMatrix index', () => {
   expect(value).toEqual(resultMatrix);
 });
 
+
 test('adjacencyMatrix_edgesetArray id', () => {
   const { edges: value } = adjacencyMatrix_edgesetArray(nodes, matrixMin, { id: 'idnum' });
   expect(value).toEqual(relationsId);
@@ -114,6 +85,7 @@ test('adjacencyMatrix_edgesetArray index', () => {
   const { edges: value } = adjacencyMatrix_edgesetArray(nodes, matrixMin);
   expect(value).toEqual(resultRelationsIndex);
 });
+
 
 test('edgesetArray_orthogonalList id', () => {
   const value = edgesetArray_orthogonalList(nodes, relationsId, { id: 'idnum' });
@@ -127,6 +99,7 @@ test('edgesetArray_orthogonalList index', () => {
   expect(value).not.toBeUndefined();
 });
 
+
 test('adjacencyMatrix_orthogonalList id', () => {
   const value = adjacencyMatrix_orthogonalList(nodes, matrixMin, { id: 'idnum' });
   expect(value).not.toBeUndefined();
@@ -138,4 +111,3 @@ test('adjacencyMatrix_orthogonalList index', () => {
   expect(value).not.toBeUndefined();
   expect(value).not.toBeUndefined();
 });
-```
